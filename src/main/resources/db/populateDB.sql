@@ -1,0 +1,1 @@
+INSERT INTO customers (first_name, last_name, address, budget)  VALUES ('Ivan', 'Ivanov', 'Russia, Kazan, Sportivnay, 1', 10000)
