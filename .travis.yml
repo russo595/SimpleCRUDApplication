@@ -1,6 +1,13 @@
-language: android
-jdk: oraclejdk8
-
+language: java
+sudo: false
+install: true
+addons:
+  sonarcloud:
+    organization: "russo595-github"
+    token:
+      secure: "0b5aedcf035f8d0c30c605b32676025bb7ae6089"
+jdk:
+  - oraclejdk8
 branches:
   only:
   - master
@@ -9,8 +16,11 @@ before_script:
  - echo "Starting build"
 
 script:
- - mvn clean install
-
+ - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
 after_script:
  - echo "Script finished"
 
