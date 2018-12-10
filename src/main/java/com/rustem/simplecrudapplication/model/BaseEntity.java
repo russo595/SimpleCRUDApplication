@@ -1,18 +1,14 @@
 package com.rustem.simplecrudapplication.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+@Data
 @MappedSuperclass
-@Getter
-@Setter
-@ToString
 public class BaseEntity {
 
     @Id

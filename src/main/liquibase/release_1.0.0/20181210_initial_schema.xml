@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        logicalFilePath="20181210_initial_schema.xml"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="20181210" author="User: Rustem_Sabitov" context="schema"
+               runAlways="false">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT count(*) FROM pg_catalog.pg_class
+                WHERE relname = 'customers'
+            </sqlCheck>
+        </preConditions>
+        <sql>
+
+            create sequence if not exists app_seq;
+
+            CREATE TABLE customers (
+            id         SERIAL           NOT NULL PRIMARY KEY,
+            first_name VARCHAR(50)      NOT NULL,
+            last_name  VARCHAR(100)     NOT NULL,
+            address    VARCHAR(1000)    NOT NULL,
+            budget     DECIMAL          NOT NULL);
+
+            INSERT INTO customers (first_name, last_name, address, budget)  VALUES ('Ivan', 'Ivanov', 'Russia, Kazan, Sportivnay, 1', 10000)
+        </sql>
+        <comment>
+            Initial schema for crudapplication
+        </comment>
+    </changeSet>
+</databaseChangeLog>
