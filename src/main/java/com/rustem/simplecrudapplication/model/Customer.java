@@ -1,20 +1,21 @@
 package com.rustem.simplecrudapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigInteger;
 
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 @Entity
-@Table(name = "customers")
-@Getter
-@Setter
-@ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "customers")
 public class Customer extends BaseEntity {
 
     @Column(name = "first_name")
@@ -27,5 +28,5 @@ public class Customer extends BaseEntity {
     private String address;
 
     @Column(name = "budget")
-    private String budget;
+    private BigInteger budget;
 }

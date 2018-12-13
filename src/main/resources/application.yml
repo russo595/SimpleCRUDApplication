@@ -1,0 +1,38 @@
+server:
+  port: 8081
+service:
+  name: crudapplication
+  versions: 1.0
+
+database:
+  postgresql:
+    host: localhost
+    port: 5432
+    defaultschema: public
+    database: postgres
+
+jpa:
+  hibernate:
+    show_sql: true
+    format_sql: true
+    use_sql_comments: true
+    dialect: org.hibernate.dialect.PostgreSQL95Dialect
+    ddl-auto: none
+    temp:
+      use_jdbc_metadata_defaults: false
+
+liquibase:
+  change-log: classpath:/root-changelog.xml
+  check-change-log-location: true
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${database.postgresql.host}:${database.postgresql.port}/${database.postgresql.database}
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 123456
+  profiles:
+    active:
+
+logging:
+  level.*: TRACE
