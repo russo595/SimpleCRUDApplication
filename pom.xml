@@ -24,6 +24,12 @@
         <lombok.version>1.18.4</lombok.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:git@github.com:russo595/SimpleCRUDApplication.git</connection>
+        <developerConnection>scm:git:git@github.com:russo595/SimpleCRUDApplication.git</developerConnection>
+        <url>https://github.com/russo595/SimpleCRUDApplication</url>
+    </scm>
+
     <dependencies>
         <!-- Spring -->
         <dependency>
