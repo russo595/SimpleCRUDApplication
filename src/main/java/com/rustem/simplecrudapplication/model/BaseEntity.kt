@@ -1,17 +1,13 @@
-package com.rustem.simplecrudapplication.model;
+package com.rustem.simplecrudapplication.model
 
-import lombok.Data;
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.MappedSuperclass
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-
-@Data
 @MappedSuperclass
-public class BaseEntity {
-
+open class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    val id: Long? = null
 }

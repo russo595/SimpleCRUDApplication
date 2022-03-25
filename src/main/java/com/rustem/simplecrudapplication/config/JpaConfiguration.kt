@@ -1,114 +1,110 @@
-package com.rustem.simplecrudapplication.config;
+package com.rustem.simplecrudapplication.config
 
-import com.zaxxer.hikari.HikariDataSource;
-import liquibase.integration.spring.SpringLiquibase;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.util.Properties;
+import com.zaxxer.hikari.HikariDataSource
+import liquibase.integration.spring.SpringLiquibase
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.jdbc.DataSourceBuilder
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor
+import org.springframework.orm.jpa.JpaTransactionManager
+import org.springframework.orm.jpa.JpaVendorAdapter
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.annotation.EnableTransactionManagement
+import java.util.*
+import javax.persistence.EntityManagerFactory
+import javax.sql.DataSource
 
 @Configuration
 @EnableTransactionManagement
-public class JpaConfiguration {
+class JpaConfiguration {
+    @Value("\${spring.datasource.driver-class-name}")
+    private lateinit var driverClassName: String
 
-    @Value("${spring.datasource.driver-class-name}")
-    private String driverClassName;
+    @Value("\${spring.datasource.url}")
+    private lateinit var databaseUrl: String
 
-    @Value("${spring.datasource.url}")
-    private String databaseUrl;
+    @Value("\${spring.datasource.username}")
+    private lateinit var username: String
 
-    @Value("${spring.datasource.username}")
-    private String username;
+    @Value("\${spring.datasource.password}")
+    private lateinit var password: String
 
-    @Value("${spring.datasource.password}")
-    private String password;
+    @Value("\${jpa.hibernate.show-sql}")
+    private lateinit var showSql: String
 
-    @Value("${jpa.hibernate.show-sql}")
-    private String showSql;
+    @Value("\${jpa.hibernate.format-sql}")
+    private lateinit var formatSql: String
 
-    @Value("${jpa.hibernate.format-sql}")
-    private String formatSql;
+    @Value("\${jpa.hibernate.use_sql_comments}")
+    private lateinit var useSqlComments: String
 
-    @Value("${jpa.hibernate.use_sql_comments}")
-    private String useSqlComments;
+    @Value("\${jpa.hibernate.ddl-auto}")
+    private lateinit var ddlAuto: String
 
-    @Value("${jpa.hibernate.ddl-auto}")
-    private String ddlAuto;
+    @Value("\${jpa.hibernate.dialect}")
+    private lateinit var dialect: String
 
-    @Value("${jpa.hibernate.dialect}")
-    private String dialect;
+    @Value("\${jpa.hibernate.temp.use_jdbc_metadata_defaults}")
+    private lateinit var useJdbcMetaDataDefaults: String
 
-    @Value("${jpa.hibernate.temp.use_jdbc_metadata_defaults}")
-    private String useJdbcMetaDataDefaults;
-
-    @Value("${liquibase.change-log}")
-    private String liquibaseChangeLogLocation;
+    @Value("\${liquibase.change-log}")
+    private lateinit var liquibaseChangeLogLocation: String
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan("com.rustem.simplecrudapplication.model");
-
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(additionalProperties());
-
-        return em;
+    fun entityManagerFactory(): LocalContainerEntityManagerFactoryBean {
+        val em = LocalContainerEntityManagerFactoryBean()
+        em.dataSource = dataSource()
+        em.setPackagesToScan("com.rustem.simplecrudapplication.model")
+        val vendorAdapter: JpaVendorAdapter = HibernateJpaVendorAdapter()
+        em.jpaVendorAdapter = vendorAdapter
+        em.setJpaProperties(additionalProperties())
+        return em
     }
 
     @Bean
     @Primary
-    DataSource dataSource() {
+    fun dataSource(): DataSource {
         return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .driverClassName(driverClassName)
-                .url(databaseUrl)
-                .username(username)
-                .password(password)
-                .build();
+            .type(HikariDataSource::class.java)
+            .driverClassName(driverClassName)
+            .url(databaseUrl)
+            .username(username)
+            .password(password)
+            .build()
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(emf);
-        return transactionManager;
+    fun transactionManager(emf: EntityManagerFactory?): PlatformTransactionManager {
+        val transactionManager = JpaTransactionManager()
+        transactionManager.entityManagerFactory = emf
+        return transactionManager
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
+    fun exceptionTranslation(): PersistenceExceptionTranslationPostProcessor {
+        return PersistenceExceptionTranslationPostProcessor()
     }
 
     @Bean
-    public SpringLiquibase liquibase() {
-        SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setChangeLog(liquibaseChangeLogLocation);
-        liquibase.setDataSource(dataSource());
-        return liquibase;
+    fun liquibase(): SpringLiquibase {
+        val liquibase = SpringLiquibase()
+        liquibase.changeLog = liquibaseChangeLogLocation
+        liquibase.dataSource = dataSource()
+        return liquibase
     }
 
-    private Properties additionalProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.show_sql", showSql);
-        properties.setProperty("hibernate.format_sql", formatSql);
-        properties.setProperty("hibernate.use_sql_comments", useSqlComments);
-        properties.setProperty("hibernate.hbm2ddl.auto", ddlAuto);
-        properties.setProperty("hibernate.dialect", dialect);
-        properties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", useJdbcMetaDataDefaults);
-        return properties;
+    private fun additionalProperties(): Properties {
+        val properties = Properties()
+        properties.setProperty("hibernate.show_sql", showSql)
+        properties.setProperty("hibernate.format_sql", formatSql)
+        properties.setProperty("hibernate.use_sql_comments", useSqlComments)
+        properties.setProperty("hibernate.hbm2ddl.auto", ddlAuto)
+        properties.setProperty("hibernate.dialect", dialect)
+        properties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", useJdbcMetaDataDefaults)
+        return properties
     }
 }

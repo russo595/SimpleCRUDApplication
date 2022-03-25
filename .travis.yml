@@ -1,5 +1,5 @@
-language: android
-jdk: oraclejdk8
+language: java
+jdk: openjdk11
 
 branches:
   only:
@@ -9,14 +9,14 @@ before_script:
  - echo "Starting build"
 
 script:
- - mvn clean install
+ - gradle clean build
 
 after_script:
  - echo "Script finished"
 
 after_success:
  - echo "Build was successful. $TRAVIS_TEST_RESULT"
- - ls -l $TRAVIS_BUILD_DIR/target
+ - ls -l $TRAVIS_BUILD_DIR/build
 
 after_failure:
  - echo "Build was failed"

@@ -1,32 +1,24 @@
-package com.rustem.simplecrudapplication.model;
+package com.rustem.simplecrudapplication.model
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import java.math.BigInteger
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.math.BigInteger;
-
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties("hibernateLazyInitializer", "handler")
 @Table(name = "customers")
-public class Customer extends BaseEntity {
-
+class Customer : BaseEntity() {
     @Column(name = "first_name")
-    private String firstName;
+    val firstName: String? = null
 
     @Column(name = "last_name")
-    private String lastName;
+    val lastName: String? = null
 
     @Column(name = "address")
-    private String address;
+    val address: String? = null
 
     @Column(name = "budget")
-    private BigInteger budget;
+    val budget: BigInteger? = null
 }

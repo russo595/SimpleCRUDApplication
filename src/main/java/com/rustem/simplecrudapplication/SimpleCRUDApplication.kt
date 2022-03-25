@@ -1,12 +1,11 @@
-package com.rustem.simplecrudapplication;
+package com.rustem.simplecrudapplication
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
 @SpringBootApplication
-public class SimpleCRUDApplication {
+class SimpleCRUDApplication
 
-    public static void main(String[] args) {
-        SpringApplication.run(SimpleCRUDApplication.class, args);
-    }
+fun main(args: Array<String>) {
+    runApplication<SimpleCRUDApplication>(*args)
 }
